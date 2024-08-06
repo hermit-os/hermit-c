@@ -1,0 +1,15 @@
+---
+Checks:
+  - clang-diagnostic-*
+  - clang-analyzer-*
+  - bugprone-*
+  - concurrency-*
+  - modernize-*
+  - performance-*
+  - portability-*
+  - readability-*
+  - -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling
+  - -readability-identifier-length
+  - -readability-magic-numbers
+WarningsAsErrors: '*'
+...

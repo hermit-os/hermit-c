@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  merge_group:
+
+env:
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    container: alpine:edge
+    steps:
+      - uses: actions/checkout@v4
+      - run: apk add meson clang-extra-tools
+      - run: meson format --check-only
+      - run: meson setup builddir
+      - run: ninja -C builddir clang-format-check
+  
+  clang-tidy:
+    name: Lint
+    runs-on: ubuntu-latest
+    container: alpine:edge
+    steps:
+      - uses: actions/checkout@v4
+      - run: apk add meson clang-extra-tools
+      - run: meson setup builddir
+      - run: ninja -C builddir clang-tidy
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    container: 
+      image: ghcr.io/hermit-os/hermit-gcc:latest
+      options: --privileged
+    defaults:
+      run:
+        working-directory: kernel
+    env:
+      HERMIT_CAREFUL: ${{ matrix.hermit-careful }}
+    strategy:
+      matrix:
+        arch: [x86_64]
+        buildtype: [debug, release]
+        include:
+          - buildtype: debug
+            hermit-careful: 1
+          - arch: x86_64
+            packages: qemu-system-x86
+            flags: --accel
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Install packages
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends gh meson ${{ matrix.packages }}
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: mkroening/rust-toolchain-toml@main
+        with:
+          toolchain-file: 'kernel/rust-toolchain.toml'
+      - run: cargo +stable install cargo-careful
+        if: matrix.hermit-careful
+      - name: Download loader
+        run: gh release download --repo hermit-os/loader --pattern hermit-loader-${{ matrix.arch }}
+      - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target hello_world qemu ${{ matrix.flags }}
+      - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target math qemu ${{ matrix.flags }}
+      - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target memory qemu ${{ matrix.flags }}
