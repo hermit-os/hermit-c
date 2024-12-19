@@ -41,3 +41,4 @@ endif
 executable('hello_world', 'src/hello_world.c', link_whole: hermit)
 executable('math', 'src/math.c', link_whole: hermit)
 executable('memory', 'src/memory.c', link_whole: hermit)
+executable('thread_local', 'src/thread_local.c', link_whole: hermit)
