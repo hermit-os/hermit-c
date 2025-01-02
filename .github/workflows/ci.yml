@@ -70,3 +70,4 @@ jobs:
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target hello_world qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target math qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target memory qemu ${{ matrix.flags }}
+      - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target thread_local qemu ${{ matrix.flags }}
