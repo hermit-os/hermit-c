@@ -67,6 +67,7 @@ jobs:
       - name: Download loader
         run: gh release download --repo hermit-os/loader --pattern hermit-loader-${{ matrix.arch }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target hello_world qemu ${{ matrix.flags }}
+      - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target http_server qemu ${{ matrix.flags }} --netdev virtio-net-pci
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target math qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target memory qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target thread_local qemu ${{ matrix.flags }}
