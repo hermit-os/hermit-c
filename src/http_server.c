@@ -14,7 +14,7 @@ static const char reply[] = "HTTP/1.1 200 OK\n"
 
 int main(void) {
     int listener = socket(AF_INET, SOCK_STREAM, 0);
-    if (listener < 0) {
+    if (listener == -1) {
         perror("socket() failed");
         return EXIT_FAILURE;
     }
@@ -24,13 +24,13 @@ int main(void) {
                                .sin_addr = INADDR_ANY};
 
     int bound = bind(listener, (struct sockaddr *)&addr, sizeof(addr));
-    if (bound < 0) {
+    if (bound == -1) {
         perror("bind() failed");
         return EXIT_FAILURE;
     }
 
     int listened = listen(listener, 1);
-    if (listened < 0) {
+    if (listened == -1) {
         perror("listen() failed");
         return EXIT_FAILURE;
     }
@@ -40,24 +40,24 @@ int main(void) {
     fprintf(stderr, "Listening on port %d...\n", LISTEN_PORT);
     for (;;) {
         int connection = accept(listener, NULL, 0);
-        if (connection < 0) {
+        if (connection == -1) {
             perror("accept() failed");
         }
 
         ssize_t readed = read(connection, read_buf, BUFSIZ);
-        if (readed < 0) {
+        if (readed == -1) {
             perror("read() failed");
         }
 
         ssize_t written = write(connection, reply, sizeof(reply) - 1);
-        if (written < 0) {
+        if (written == -1) {
             perror("write() failed");
         } else if ((size_t)written != sizeof(reply) - 1) {
             fprintf(stderr, "partial write\n");
         }
 
         int closed = close(connection);
-        if (closed < 0) {
+        if (closed == -1) {
             perror("close() failed");
         }
     }
