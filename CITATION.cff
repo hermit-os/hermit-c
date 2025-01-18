@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Kröning"
+  given-names: "Martin"
+  orcid: "https://orcid.org/0009-0005-0622-4229"
+
+title: "Hermit for C"
+date-released: 2024-11-28
+url: "https://github.com/hermit-os/hermit-c"
