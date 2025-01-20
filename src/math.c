@@ -8,4 +8,6 @@ void test_expf(void) {
     print_assert(expf(1.0F) == (float)M_E);
 }
 
-int main(void) { test_expf(); }
+int main(void) {
+    test_expf();
+}
