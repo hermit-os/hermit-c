@@ -10,7 +10,8 @@
         size_t len;                                                            \
     };                                                                         \
                                                                                \
-    struct name name##_new(void) {                                             \
+    /* NOLINTNEXTLINE(clang-diagnostic-unused-function) */                     \
+    static inline struct name name##_new(void) {                               \
         struct name v = {                                                      \
             .ptr = NULL,                                                       \
             .cap = 0,                                                          \
@@ -19,7 +20,8 @@
         return v;                                                              \
     }                                                                          \
                                                                                \
-    void name##_grow_one(struct name *v) {                                     \
+    /* NOLINTNEXTLINE(clang-diagnostic-unused-function) */                     \
+    static inline void name##_grow_one(struct name *v) {                       \
         if (v->cap == 0) {                                                     \
             v->cap = 1;                                                        \
         } else {                                                               \
@@ -31,7 +33,8 @@
         v->ptr = ptr;                                                          \
     }                                                                          \
                                                                                \
-    void name##_push(struct name *v, ty value) {                               \
+    /* NOLINTNEXTLINE(clang-diagnostic-unused-function) */                     \
+    static inline void name##_push(struct name *v, ty value) {                 \
         if (v->len == v->cap) {                                                \
             name##_grow_one(v);                                                \
         }                                                                      \
@@ -40,14 +43,16 @@
         v->len += 1;                                                           \
     }                                                                          \
                                                                                \
-    ty name##_pop(struct name *v) {                                            \
+    /* NOLINTNEXTLINE(clang-diagnostic-unused-function) */                     \
+    static inline ty name##_pop(struct name *v) {                              \
         assert(v->len != 0);                                                   \
                                                                                \
         v->len -= 1;                                                           \
         return *(v->ptr + v->len);                                             \
     }                                                                          \
                                                                                \
-    ty name##_swap_remove(struct name *v, size_t index) {                      \
+    /* NOLINTNEXTLINE(clang-diagnostic-unused-function) */                     \
+    static inline ty name##_swap_remove(struct name *v, size_t index) {        \
         assert(index < v->len);                                                \
                                                                                \
         ty value = *(v->ptr + index);                                          \
@@ -58,7 +63,8 @@
         return value;                                                          \
     }                                                                          \
                                                                                \
-    void name##_drop(struct name *v) {                                         \
+    /* NOLINTNEXTLINE(clang-diagnostic-unused-function) */                     \
+    static inline void name##_drop(struct name *v) {                           \
         free(v->ptr);                                                          \
         *v = name##_new();                                                     \
     }
