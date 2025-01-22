@@ -52,3 +52,4 @@ executable(
     link_whole: hermit,
 )
 executable('thread_local', 'src/thread_local.c', link_whole: hermit)
+executable('time', 'src/time.c', link_whole: hermit)
