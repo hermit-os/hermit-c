@@ -74,3 +74,4 @@ jobs:
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target memory qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target pthreads --smp 4 qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target thread_local qemu ${{ matrix.flags }}
+      - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target time qemu ${{ matrix.flags }}
