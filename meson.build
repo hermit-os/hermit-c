@@ -40,6 +40,7 @@ else
     hermit = []
 endif
 
+executable('fs', 'src/fs.c', link_whole: hermit)
 executable('hello_world', 'src/hello_world.c', link_whole: hermit)
 executable('http_server', 'src/http_server.c', link_whole: hermit)
 executable('http_server_poll', 'src/http_server_poll.c', link_whole: hermit)
