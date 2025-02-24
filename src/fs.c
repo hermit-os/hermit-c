@@ -180,6 +180,44 @@ static int print_getdents64(const char *path) {
     return 0;
 }
 
+static int print_readdir(const char *path) {
+    fprintf(stderr, "print_readdir(\"%s\")\n", path);
+
+    fprintf(stderr, "opendir(\"%s\")\n", path);
+    DIR *dir = opendir(path);
+    if (dir == NULL) {
+        perror("opendir() failed");
+        return -1;
+    }
+
+    fputc('\n', stderr);
+    for (;;) {
+        errno = 0;
+        struct dirent *dirent = readdir(dir);
+        if (dirent == NULL) {
+            break;
+        }
+
+        fprintf(stderr, "%s\n", dirent->d_name);
+    }
+    fputc('\n', stderr);
+
+    if (errno != 0) {
+        perror("readdir() failed");
+        return -1;
+    }
+
+    fprintf(stderr, "closedir(\"%s\")\n", path);
+    int closed = closedir(dir);
+    if (closed == -1) {
+        perror("closedir() failed");
+        return -1;
+    }
+
+    fputc('\n', stderr);
+    return 0;
+}
+
 int main(void) {
 #ifdef __hermit__
     const char *dir_path = "/my-dir";
@@ -201,6 +239,11 @@ int main(void) {
 
     int getdents64_status = print_getdents64(dir_path);
     if (getdents64_status == -1) {
+        return EXIT_FAILURE;
+    }
+
+    int readdir_status = print_readdir(dir_path);
+    if (readdir_status == -1) {
         return EXIT_FAILURE;
     }
 
