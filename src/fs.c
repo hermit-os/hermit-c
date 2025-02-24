@@ -62,13 +62,13 @@ static int create_files(const char *dir_path, size_t file_count) {
 
     for (size_t i = 0; i < file_count; ++i) {
         char file_path[256];
-        int written =
+        int printed =
             snprintf(file_path, sizeof(file_path), "%s/file_%zu", dir_path, i);
-        if (written < 0) {
+        if (printed < 0) {
             perror("snprintf() failed");
             return -1;
         }
-        if ((size_t)written + 1 > sizeof(file_path)) {
+        if ((size_t)printed + 1 > sizeof(file_path)) {
             fprintf(stderr, "snprintf() failed: buffer too small");
             return -1;
         }
@@ -89,6 +89,42 @@ static int create_files(const char *dir_path, size_t file_count) {
         }
 
         print_assert((buffer.st_mode & mode) == mode);
+
+        char buf[512];
+        memset(buf, 0x7f, sizeof(buf));
+
+        ssize_t written = write(fd, buf, sizeof(buf));
+        if (written == -1) {
+            perror("write() failed");
+            return -1;
+        }
+        if ((size_t)written != sizeof(buf)) {
+            fprintf(stderr, "partial write\n");
+            return -1;
+        }
+
+        off_t seeked = lseek(fd, 0, SEEK_SET);
+        if (seeked == -1) {
+            perror("lseek() failed");
+            return -1;
+        }
+
+        memset(buf, 0, sizeof(buf));
+        ssize_t readed = read(fd, buf, sizeof(buf));
+        if (readed == -1) {
+            perror("read() failed");
+            return -1;
+        }
+        if ((size_t)readed != sizeof(buf)) {
+            fprintf(stderr, "readed = %zu\n", readed);
+            fprintf(stderr, "partial read\n");
+            return -1;
+        }
+        fprintf(stderr, "readed = %zu\n", readed);
+
+        for (size_t i = 0; i < sizeof(buf); ++i) {
+            assert(buf[i] == 0x7f);
+        }
 
         fprintf(stderr, "close(%i)\n", fd);
         int closed = close(fd);
