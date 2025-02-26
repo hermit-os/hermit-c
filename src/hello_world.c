@@ -7,8 +7,8 @@ extern char **environ;
 
 int main(int argc, char *argv[]) {
     printf("argc = %d\n", argc);
-    for (int ndx = 0; ndx != argc; ++ndx) {
-        printf("argv[%d] --> %s\n", ndx, argv[ndx]);
+    for (int i = 0; i != argc; ++i) {
+        printf("argv[%d] = %s\n", i, argv[i]);
     }
     printf("argv[argc] = %p\n", (void *)argv[argc]);
 
