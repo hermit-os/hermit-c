@@ -33,7 +33,16 @@ void accept_all(struct vec_pollfd *pollfds) {
 
         // Set nonblocking
         int previous = fcntl(connection, F_GETFL);
-        fcntl(connection, F_SETFL, previous | O_NONBLOCK);
+        if (previous == -1) {
+            perror("fcntl() failed");
+            return;
+        }
+
+        int fcntl_status = fcntl(connection, F_SETFL, previous | O_NONBLOCK);
+        if (fcntl_status == -1) {
+            perror("fcntl() failed");
+            return;
+        }
 
         struct pollfd pollfd_listener = {
             .fd = connection,
