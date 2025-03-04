@@ -28,6 +28,7 @@ void accept_all(struct vec_pollfd *pollfds) {
             }
 
             perror("accept() failed");
+            return;
         }
 
         // Set nonblocking
