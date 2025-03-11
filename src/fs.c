@@ -58,7 +58,7 @@ static int create_files(const char *dir_path, size_t file_count) {
     fprintf(stderr, "create_files(\"%s\", %zu)\n", dir_path, file_count);
 
     mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-    int oflag = O_WRONLY | O_CREAT | O_TRUNC;
+    int oflag = O_RDWR | O_CREAT | O_TRUNC;
 
     for (size_t i = 0; i < file_count; ++i) {
         char file_path[256];
