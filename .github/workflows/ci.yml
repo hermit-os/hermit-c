@@ -76,3 +76,32 @@ jobs:
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target pthreads --smp 4 qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target thread_local qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target time qemu ${{ matrix.flags }}
+
+  test-linux:
+    name: Test (Linux)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Meson
+        run: |
+          sudo apt-get update
+          sudo apt-get install meson
+      - run: meson setup build
+      - run: meson compile -C build
+      - run: ./build/hello_world
+      - run: ./build/fs
+      - run: |
+          ./build/http_server &
+          curl localhost:9975
+          pkill -f http_server
+          sudo ss --kill state all dst 127.0.0.1 sport 9975
+      - run: |
+          ./build/http_server_poll &
+          curl localhost:9975
+          pkill -f http_server_poll
+          sudo ss --kill state all dst 127.0.0.1 sport 9975
+      - run: ./build/math
+      - run: ./build/memory
+      - run: ./build/pthreads
+      - run: ./build/thread_local
+      - run: ./build/time
