@@ -86,7 +86,7 @@ set(CMAKE_C_COMPILER x86_64-hermit-gcc)
 set(CMAKE_CXX_COMPILER x86_64-hermit-g++)
 
 # Needed to pass CMake's compiler test during build system generation
-set(CMAKE_EXE_LINKER_FLAGS_INIT /absolute/path/to/libhermit.a)
+set(CMAKE_EXE_LINKER_FLAGS_INIT "-Wl,--whole-archive /absolute/path/to/libhermit.a -Wl,--no-whole-archive")
 ```
 
 The toolchain file can be supplied to CMake during configuration:
