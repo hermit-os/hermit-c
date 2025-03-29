@@ -34,7 +34,7 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     container: 
-      image: ghcr.io/hermit-os/hermit-gcc:latest
+      image: ghcr.io/hermit-os/hermit-gcc:${{ matrix.arch }}
       options: --privileged
     defaults:
       run:
