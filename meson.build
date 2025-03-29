@@ -6,6 +6,7 @@ if host_machine.system() == 'hermit'
     find_program('rustup', required: true)
     cargo = find_program('cargo', required: true)
 
+    arch = host_machine.cpu()
     if get_option('buildtype') == 'debug'
         profile = 'dev'
     else
@@ -28,7 +29,8 @@ if host_machine.system() == 'hermit'
             'build',
             '--target-dir=@PRIVATE_DIR@/hermit-kernel',
             '--artifact-dir=@OUTDIR@',
-            '--arch=x86_64',
+            '--arch',
+            arch,
             '--profile',
             profile,
             '--no-default-features',
