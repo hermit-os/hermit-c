@@ -43,7 +43,7 @@ jobs:
       HERMIT_CAREFUL: ${{ matrix.hermit-careful }}
     strategy:
       matrix:
-        arch: [x86_64]
+        arch: [aarch64, x86_64]
         buildtype: [debug, release]
         include:
           - buildtype: debug
@@ -51,6 +51,8 @@ jobs:
           - arch: x86_64
             packages: qemu-system-x86
             flags: --accel
+          - arch: aarch64
+            packages: qemu-system-arm ipxe-qemu
     steps:
       - uses: actions/checkout@v4
         with:
