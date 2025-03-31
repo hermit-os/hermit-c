@@ -43,7 +43,7 @@ jobs:
       HERMIT_CAREFUL: ${{ matrix.hermit-careful }}
     strategy:
       matrix:
-        arch: [aarch64, x86_64]
+        arch: [aarch64, riscv64, x86_64]
         buildtype: [debug, release]
         include:
           - buildtype: debug
@@ -51,8 +51,13 @@ jobs:
           - arch: x86_64
             packages: qemu-system-x86
             flags: --accel
+            netdev: virtio-net-pci
           - arch: aarch64
             packages: qemu-system-arm ipxe-qemu
+            netdev: virtio-net-pci
+          - arch: riscv64
+            packages: qemu-system-misc
+            netdev: virtio-net-mmio
     steps:
       - uses: actions/checkout@v4
         with:
@@ -69,13 +74,19 @@ jobs:
         if: matrix.hermit-careful
       - name: Download loader
         run: gh release download --repo hermit-os/loader --pattern hermit-loader-${{ matrix.arch }}
+      - name: Dowload OpenSBI
+        if: matrix.arch == 'riscv64'
+        run: |
+          gh release download v1.6 --repo riscv-software-src/opensbi --pattern 'opensbi-*-rv-bin.tar.xz'
+          tar -xvf opensbi-*-rv-bin.tar.xz opensbi-1.6-rv-bin/share/opensbi/lp64/generic/firmware/fw_jump.bin
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target hello_world qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target fs qemu ${{ matrix.flags }}
-      - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target http_server qemu ${{ matrix.flags }} --netdev virtio-net-pci
-      - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target http_server_poll qemu ${{ matrix.flags }} --netdev virtio-net-pci
+      - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target http_server qemu ${{ matrix.flags }} --netdev ${{ matrix.netdev }}
+      - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target http_server_poll qemu ${{ matrix.flags }} --netdev ${{ matrix.netdev }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target math qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target memory qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target pthreads --smp 4 qemu ${{ matrix.flags }}
+        if: matrix.arch != 'riscv64'
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target thread_local qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target time qemu ${{ matrix.flags }}
 
