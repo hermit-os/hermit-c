@@ -89,6 +89,7 @@ jobs:
         if: matrix.arch != 'riscv64'
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target thread_local qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target time qemu ${{ matrix.flags }}
+      - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target uname qemu ${{ matrix.flags }}
 
   test-linux:
     name: Test (Linux)
@@ -118,3 +119,4 @@ jobs:
       - run: ./build/pthreads
       - run: ./build/thread_local
       - run: ./build/time
+      - run: ./build/uname
