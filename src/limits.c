@@ -4,7 +4,6 @@
 
 #ifdef __linux__
 #define LONG_BIT 64
-#define SSIZE_MAX LONG_MAX
 #define WORD_BIT 32
 #endif
 
