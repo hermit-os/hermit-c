@@ -12,7 +12,7 @@ if host_machine.system() == 'hermit'
     else
         profile = 'release'
     endif
-    features = 'acpi,dhcpv4,newlib,smp,tcp'
+    features = 'acpi,dhcpv4,dns,newlib,smp,tcp'
     if arch != 'riscv64'
         features += ',pci'
     endif
@@ -46,6 +46,7 @@ else
 endif
 
 executable('fs', 'src/fs.c', link_whole: hermit)
+executable('getaddrinfo', 'src/getaddrinfo.c', link_whole: hermit)
 executable('hello_world', 'src/hello_world.c', link_whole: hermit)
 executable('http_server', 'src/http_server.c', link_whole: hermit)
 executable('http_server_poll', 'src/http_server_poll.c', link_whole: hermit)
