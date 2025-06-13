@@ -115,7 +115,7 @@ int main(void) {
 
     struct sockaddr_in addr = {.sin_family = AF_INET,
                                .sin_port = htons(LISTEN_PORT),
-                               .sin_addr = INADDR_ANY};
+                               .sin_addr = {htonl(INADDR_ANY)}};
 
     int bound = bind(listener, (struct sockaddr *)&addr, sizeof(addr));
     if (bound == -1) {
