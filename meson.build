@@ -47,6 +47,7 @@ endif
 
 executable('fs', 'src/fs.c', link_whole: hermit)
 executable('fstat', 'src/fstat.c', link_whole: hermit)
+executable('getsockname', 'src/getsockname.c', link_whole: hermit)
 executable('hello_world', 'src/hello_world.c', link_whole: hermit)
 executable('http_server', 'src/http_server.c', link_whole: hermit)
 executable('http_server_poll', 'src/http_server_poll.c', link_whole: hermit)
