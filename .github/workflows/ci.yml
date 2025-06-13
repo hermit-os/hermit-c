@@ -81,6 +81,7 @@ jobs:
           tar -xvf opensbi-*-rv-bin.tar.xz opensbi-1.6-rv-bin/share/opensbi/lp64/generic/firmware/fw_jump.bin
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target hello_world qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target fs qemu ${{ matrix.flags }}
+      - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target fstat qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target http_server qemu ${{ matrix.flags }} --netdev ${{ matrix.netdev }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target http_server_poll qemu ${{ matrix.flags }} --netdev ${{ matrix.netdev }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target limits qemu ${{ matrix.flags }}
@@ -105,6 +106,7 @@ jobs:
       - run: meson compile -C build
       - run: ./build/hello_world
       - run: ./build/fs
+      - run: ./build/fstat
       - run: |
           ./build/http_server &
           curl localhost:9975
