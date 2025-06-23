@@ -101,6 +101,31 @@ You can then build as usual with CMake:
 cmake --build build-x86_64-hermit-debug
 ```
 
+## Autoconf
+
+When using Autoconf, the build directory can be set up for Hermit:
+
+First create and enter the build directory:
+
+```bash
+mkdir build-hermit
+cd build-hermit
+```
+
+Then, configure the build directory for Hermit:
+
+```bash
+../configure --host=x86_64-hermit \
+    LDFLAGS="-pie -Wl,--push-state,--whole-archive,-lhermit,--pop-state -L/absolute/path/to/libhermit-directory" \
+    CFLAGS="-fPIE"
+```
+
+Finally, build the project:
+
+```bash
+make
+```
+
 ## Rust applications with C code
 
 When building a Rust application with C code that uses the C standard library, enable the `hermit` crate's `libc` feature to link against the C standard library.
