@@ -24,7 +24,7 @@ Link against the whole kernel archive using [`--whole-archive`] to avoid an erro
 A complete GCC invocation might look like this:
 
 ```bash
-x86_64-hermit-gcc -o main -fPIE main.c -pie -Wl,--whole-archive build-x86_64-hermit-debug/libhermit.a -Wl,--no-whole-archive
+x86_64-hermit-gcc -o main -fPIE main.c -pie -Wl,--push-state,--whole-archive,-lhermit,--pop-state -L/absolute/path/to/libhermit.a-directory
 ```
 
 [`-fPIE`]: https://gcc.gnu.org/onlinedocs/gcc/Code-Gen-Options.html
@@ -86,7 +86,7 @@ set(CMAKE_C_COMPILER x86_64-hermit-gcc)
 set(CMAKE_CXX_COMPILER x86_64-hermit-g++)
 
 # Needed to pass CMake's compiler test during build system generation
-set(CMAKE_EXE_LINKER_FLAGS_INIT "-Wl,--whole-archive /absolute/path/to/libhermit.a -Wl,--no-whole-archive")
+set(CMAKE_EXE_LINKER_FLAGS_INIT "-Wl,--push-state,--whole-archive,-lhermit,--pop-state -L/absolute/path/to/libhermit.a-directory")
 ```
 
 The toolchain file can be supplied to CMake during configuration:
