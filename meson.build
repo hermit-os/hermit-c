@@ -12,7 +12,7 @@ if host_machine.system() == 'hermit'
     else
         profile = 'release'
     endif
-    features = 'acpi,dhcpv4,newlib,smp,tcp'
+    features = 'acpi,dhcpv4,newlib,smp,tcp,udp'
     if arch != 'riscv64'
         features += ',pci'
     endif
