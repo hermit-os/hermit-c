@@ -5,13 +5,17 @@
 
 void test_expf(void) {
     puts(__func__);
-    print_assert(expf(1.0F) == (float)M_E);
+    float (*ptr)(float arg) = &expf;
+
+    print_assert(ptr(1.0F) == (float)M_E);
 }
 
 void test_modf(void) {
     puts(__func__);
+    double (*ptr)(double arg, double *iptr) = &modf;
+
     double f3;
-    double f2 = modf(123.25, &f3);
+    double f2 = ptr(123.25, &f3);
     print_assert(f2 == 0.25);
     print_assert(f3 == 123.0);
 }
