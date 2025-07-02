@@ -52,7 +52,7 @@ executable('hello_world', 'src/hello_world.c', link_whole: hermit)
 executable('http_server', 'src/http_server.c', link_whole: hermit)
 executable('http_server_poll', 'src/http_server_poll.c', link_whole: hermit)
 executable('limits', 'src/limits.c', link_whole: hermit)
-executable('math', 'src/math.c', link_whole: hermit)
+executable('math', 'src/math.c', link_whole: hermit, link_args: '-lm')
 executable('memory', 'src/memory.c', link_whole: hermit)
 executable(
     'pthreads',
