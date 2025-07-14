@@ -17,7 +17,7 @@ if host_machine.system() == 'hermit'
         features += ',pci'
     endif
 
-    hermit = custom_target(
+    hermit_tgt = custom_target(
         'hermit',
         build_always_stale: true,
         console: true,
@@ -41,26 +41,31 @@ if host_machine.system() == 'hermit'
             features,
         ],
     )
+
+    hermit_dep = declare_dependency(link_args: '-L.', sources: hermit_tgt)
 else
-    hermit = []
+    hermit_dep = []
 endif
 
-executable('fs', 'src/fs.c', link_whole: hermit)
-executable('fstat', 'src/fstat.c', link_whole: hermit)
-executable('getsockname', 'src/getsockname.c', link_whole: hermit)
-executable('hello_world', 'src/hello_world.c', link_whole: hermit)
-executable('http_server', 'src/http_server.c', link_whole: hermit)
-executable('http_server_poll', 'src/http_server_poll.c', link_whole: hermit)
-executable('http_server_select', 'src/http_server_select.c', link_whole: hermit)
-executable('limits', 'src/limits.c', link_whole: hermit)
-executable('math', 'src/math.c', link_whole: hermit, link_args: '-lm')
-executable('memory', 'src/memory.c', link_whole: hermit)
+executable('fs', 'src/fs.c', dependencies: hermit_dep)
+executable('fstat', 'src/fstat.c', dependencies: hermit_dep)
+executable('getsockname', 'src/getsockname.c', dependencies: hermit_dep)
+executable('hello_world', 'src/hello_world.c', dependencies: hermit_dep)
+executable('http_server', 'src/http_server.c', dependencies: hermit_dep)
 executable(
-    'pthreads',
-    'src/pthreads.c',
-    dependencies: thread_dep,
-    link_whole: hermit,
+    'http_server_poll',
+    'src/http_server_poll.c',
+    dependencies: hermit_dep,
 )
-executable('thread_local', 'src/thread_local.c', link_whole: hermit)
-executable('time', 'src/time.c', link_whole: hermit)
-executable('uname', 'src/uname.c', link_whole: hermit)
+executable(
+    'http_server_select',
+    'src/http_server_select.c',
+    dependencies: hermit_dep,
+)
+executable('limits', 'src/limits.c', dependencies: hermit_dep)
+executable('math', 'src/math.c', dependencies: hermit_dep, link_args: '-lm')
+executable('memory', 'src/memory.c', dependencies: hermit_dep)
+executable('pthreads', 'src/pthreads.c', dependencies: [hermit_dep, thread_dep])
+executable('thread_local', 'src/thread_local.c', dependencies: hermit_dep)
+executable('time', 'src/time.c', dependencies: hermit_dep)
+executable('uname', 'src/uname.c', dependencies: hermit_dep)

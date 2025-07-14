@@ -10,7 +10,6 @@ With this cross compiler you can compile most C code for Hermit.
 
 When compiling code with the Hermit cross compiler, you need to enable position-independent code (PIC) or position-independent executable (PIE).
 When linking an application, you need to explicitly link against a Hermit kernel (`libhermit.a`) that you can build from our [kernel] repository.
-Make sure to link against the *whole archive* ([`--whole-archive`]).
 
 [hermit-gcc]: https://github.com/hermit-os/hermit-gcc
 [kernel]: https://github.com/hermit-os/kernel
@@ -20,16 +19,14 @@ Make sure to link against the *whole archive* ([`--whole-archive`]).
 You can compile your C applications manually with Hermit's cross compiler by linking against the Hermit kernel.
 To generate PIE code, add [`-fPIE`].
 To also link to a PIE, add [`-pie`].
-Link against the whole kernel archive using [`--whole-archive`] to avoid an error about undefined kernel symbols.
 A complete GCC invocation might look like this:
 
 ```bash
-x86_64-hermit-gcc -o main -fPIE main.c -pie -Wl,--push-state,--whole-archive,-lhermit,--pop-state -L/absolute/path/to/libhermit.a-directory
+x86_64-hermit-gcc -o main -fPIE main.c -pie -L/absolute/path/to/libhermit.a-directory
 ```
 
 [`-fPIE`]: https://gcc.gnu.org/onlinedocs/gcc/Code-Gen-Options.html
 [`-pie`]: https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html
-[`--whole-archive`]: https://sourceware.org/binutils/docs/ld/Options.html
 
 ## Meson
 
@@ -86,7 +83,7 @@ set(CMAKE_C_COMPILER x86_64-hermit-gcc)
 set(CMAKE_CXX_COMPILER x86_64-hermit-g++)
 
 # Needed to pass CMake's compiler test during build system generation
-set(CMAKE_EXE_LINKER_FLAGS_INIT "-Wl,--push-state,--whole-archive,-lhermit,--pop-state -L/absolute/path/to/libhermit.a-directory")
+set(CMAKE_EXE_LINKER_FLAGS_INIT "-L/absolute/path/to/libhermit.a-directory")
 ```
 
 The toolchain file can be supplied to CMake during configuration:
@@ -116,7 +113,7 @@ Then, configure the build directory for Hermit:
 
 ```bash
 ../configure --host=x86_64-hermit \
-    LDFLAGS="-pie -Wl,--push-state,--whole-archive,-lhermit,--pop-state -L/absolute/path/to/libhermit-directory" \
+    LDFLAGS="-pie -L/absolute/path/to/libhermit-directory" \
     CFLAGS="-fPIE"
 ```
 

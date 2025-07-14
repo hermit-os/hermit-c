@@ -94,8 +94,6 @@ jobs:
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target thread_local qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target time qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target uname qemu ${{ matrix.flags }}
-      # Explicitly link to libm before the whole libhermit archive to provoke duplicate symbol errors
-      - run: ${{ matrix.arch }}-hermit-gcc -fPIE ../src/math.c -pie -lm -Wl,--push-state,--whole-archive,-lhermit,--pop-state -L../build-${{ matrix.arch }}-hermit-${{ matrix.buildtype }}
 
   test-linux:
     name: Test (Linux)
