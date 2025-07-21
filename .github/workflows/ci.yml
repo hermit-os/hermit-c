@@ -82,6 +82,7 @@ jobs:
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target hello_world qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target fs qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target fstat qemu ${{ matrix.flags }}
+      - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target getaddrinfo qemu ${{ matrix.flags }} --devices ${{ matrix.netdev }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target getsockname qemu ${{ matrix.flags }} --devices ${{ matrix.netdev }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target http_server qemu ${{ matrix.flags }} --devices ${{ matrix.netdev }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target http_server_poll qemu ${{ matrix.flags }} --devices ${{ matrix.netdev }}
@@ -109,6 +110,7 @@ jobs:
       - run: ./build/hello_world
       - run: ./build/fs
       - run: ./build/fstat
+      - run: ./build/getaddrinfo
       - run: ./build/getsockname
       - run: |
           ./build/http_server &
