@@ -12,7 +12,7 @@ if host_machine.system() == 'hermit'
     else
         profile = 'release'
     endif
-    features = 'acpi,dhcpv4,mman,newlib,smp,tcp,udp,virtio-net'
+    features = 'acpi,dhcpv4,dns,mman,newlib,smp,tcp,udp,virtio-net'
     if arch != 'riscv64'
         features += ',pci'
     endif
@@ -49,6 +49,7 @@ endif
 
 executable('fs', 'src/fs.c', dependencies: hermit_dep)
 executable('fstat', 'src/fstat.c', dependencies: hermit_dep)
+executable('getaddrinfo', 'src/getaddrinfo.c', dependencies: hermit_dep)
 executable('getsockname', 'src/getsockname.c', dependencies: hermit_dep)
 executable('hello_world', 'src/hello_world.c', dependencies: hermit_dep)
 executable('http_server', 'src/http_server.c', dependencies: hermit_dep)
