@@ -63,6 +63,7 @@ executable(
     'src/http_server_select.c',
     dependencies: hermit_dep,
 )
+executable('libgen', 'src/libgen.c', dependencies: hermit_dep)
 executable('limits', 'src/limits.c', dependencies: hermit_dep)
 executable('math', 'src/math.c', dependencies: hermit_dep, link_args: '-lm')
 executable('memory', 'src/memory.c', dependencies: hermit_dep)

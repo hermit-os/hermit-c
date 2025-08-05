@@ -87,6 +87,7 @@ jobs:
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target http_server qemu ${{ matrix.flags }} --devices ${{ matrix.netdev }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target http_server_poll qemu ${{ matrix.flags }} --devices ${{ matrix.netdev }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target http_server_select qemu ${{ matrix.flags }} --devices ${{ matrix.netdev }}
+      - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target libgen qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target limits qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target math qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target memory qemu ${{ matrix.flags }}
@@ -127,6 +128,7 @@ jobs:
           curl localhost:9975
           pkill -f http_server_select
           sudo ss --kill state all dst 127.0.0.1 sport 9975
+      - run: ./build/libgen
       - run: ./build/limits
       - run: ./build/math
       - run: ./build/memory
