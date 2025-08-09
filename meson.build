@@ -1,5 +1,6 @@
 project('hermit-c', 'c', default_options: ['warning_level=3', 'b_pie=true'])
 
+atomic_dep = declare_dependency(link_args: '-latomic')
 thread_dep = dependency('threads')
 
 if host_machine.system() == 'hermit'
@@ -47,6 +48,11 @@ else
     hermit_dep = []
 endif
 
+executable(
+    'atomic',
+    'src/atomic.c',
+    dependencies: [atomic_dep, thread_dep, hermit_dep],
+)
 executable('fs', 'src/fs.c', dependencies: hermit_dep)
 executable('fstat', 'src/fstat.c', dependencies: hermit_dep)
 executable('getaddrinfo', 'src/getaddrinfo.c', dependencies: hermit_dep)
