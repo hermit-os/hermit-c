@@ -1,5 +1,6 @@
 project('hermit-c', 'c', default_options: ['warning_level=3', 'b_pie=true'])
 
+atomic_dep = declare_dependency(link_args: '-latomic')
 thread_dep = dependency('threads')
 
 if host_machine.system() == 'hermit'
@@ -67,7 +68,11 @@ executable('libgen', 'src/libgen.c', dependencies: hermit_dep)
 executable('limits', 'src/limits.c', dependencies: hermit_dep)
 executable('math', 'src/math.c', dependencies: hermit_dep, link_args: '-lm')
 executable('memory', 'src/memory.c', dependencies: hermit_dep)
-executable('pthreads', 'src/pthreads.c', dependencies: [hermit_dep, thread_dep])
+executable(
+    'pthreads',
+    'src/pthreads.c',
+    dependencies: [thread_dep, atomic_dep, hermit_dep],
+)
 executable('thread_local', 'src/thread_local.c', dependencies: hermit_dep)
 executable('time', 'src/time.c', dependencies: hermit_dep)
 executable('uname', 'src/uname.c', dependencies: hermit_dep)

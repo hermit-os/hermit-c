@@ -9,12 +9,12 @@ enum { ITERATIONS = 10000000 };
 
 struct thread_info {
     pthread_t thread_id;
-    atomic_size_t *count;
+    _Atomic __uint128_t *count;
 };
 
 static void *thread_start(void *arg) {
     struct thread_info *info = arg;
-    atomic_size_t *count = info->count;
+    _Atomic __uint128_t *count = info->count;
 
     for (size_t i = 0; i < ITERATIONS; ++i) {
         atomic_fetch_add_explicit(count, 1, memory_order_relaxed);
@@ -26,7 +26,7 @@ static void *thread_start(void *arg) {
 int main(void) {
     size_t parallelism = 4;
 
-    atomic_size_t count = 0;
+    _Atomic __uint128_t count = 0;
 
     struct thread_info *thr_arg = malloc(parallelism * sizeof(*thr_arg));
     for (size_t i = 0; i < parallelism; ++i) {
