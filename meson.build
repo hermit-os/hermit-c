@@ -1,4 +1,4 @@
-project('hermit-c', 'c', default_options: ['warning_level=3', 'b_pie=true'])
+project('hermit-c', 'c', default_options: ['warning_level=3'])
 
 atomic_dep = declare_dependency(link_args: '-latomic')
 thread_dep = dependency('threads')
