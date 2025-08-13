@@ -8,7 +8,6 @@ For building C code for Hermit you need a corresponding cross compiler.
 We provide a Docker image containing a GCC-based cross compiler in our [hermit-gcc] repository.
 With this cross compiler you can compile most C code for Hermit.
 
-When compiling code with the Hermit cross compiler, you need to enable position-independent code (PIC) or position-independent executable (PIE).
 When linking an application, you need to explicitly link against a Hermit kernel (`libhermit.a`) that you can build from our [kernel] repository.
 
 [hermit-gcc]: https://github.com/hermit-os/hermit-gcc
@@ -17,16 +16,11 @@ When linking an application, you need to explicitly link against a Hermit kernel
 ## GCC
 
 You can compile your C applications manually with Hermit's cross compiler by linking against the Hermit kernel.
-To generate PIE code, add [`-fPIE`].
-To also link to a PIE, add [`-pie`].
 A complete GCC invocation might look like this:
 
 ```bash
-x86_64-hermit-gcc -o main -fPIE main.c -pie -L/absolute/path/to/libhermit.a-directory
+x86_64-hermit-gcc -o main main.c -L/absolute/path/to/libhermit.a-directory
 ```
-
-[`-fPIE`]: https://gcc.gnu.org/onlinedocs/gcc/Code-Gen-Options.html
-[`-pie`]: https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html
 
 ## Meson
 
@@ -113,8 +107,7 @@ Then, configure the build directory for Hermit:
 
 ```bash
 ../configure --host=x86_64-hermit \
-    LDFLAGS="-pie -L/absolute/path/to/libhermit-directory" \
-    CFLAGS="-fPIE"
+    LDFLAGS="-L/absolute/path/to/libhermit-directory"
 ```
 
 Finally, build the project:
