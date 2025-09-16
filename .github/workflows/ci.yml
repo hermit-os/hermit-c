@@ -48,6 +48,10 @@ jobs:
         include:
           - buildtype: debug
             hermit-careful: 1
+          # FIXME: this is a workaround to relocations not fitting anymore because of too much code
+          - buildtype: debug
+            arch: riscv64
+            hermit-careful: 0
           - arch: x86_64
             packages: qemu-system-x86
             flags: --accel
