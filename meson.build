@@ -17,12 +17,18 @@ if host_machine.system() == 'hermit'
     if arch != 'riscv64'
         features += ',pci'
     endif
+    env = {}
+    if arch == 'riscv64' and get_option('buildtype') == 'debug'
+        # FIXME: this is a workaround to relocations not fitting anymore because of too much code
+        env += {'CARGO_ENCODED_RUSTFLAGS': '-Copt-level=1'}
+    endif
 
     hermit_tgt = custom_target(
         'hermit',
         build_always_stale: true,
         console: true,
         output: 'libhermit.a',
+        env: env,
         command: [
             cargo,
             'run',
