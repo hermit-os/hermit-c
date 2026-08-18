@@ -11,7 +11,7 @@ env:
 jobs:
   format:
     name: Format
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     container: alpine:3.21
     steps:
       - uses: actions/checkout@v7
@@ -22,7 +22,7 @@ jobs:
   
   clang-tidy:
     name: Lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     container: alpine:3.21
     steps:
       - uses: actions/checkout@v7
@@ -32,7 +32,7 @@ jobs:
 
   test:
     name: Test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     container: 
       image: ghcr.io/hermit-os/hermit-gcc:${{ matrix.arch }}
       options: --privileged
@@ -103,7 +103,7 @@ jobs:
 
   test-linux:
     name: Test (Linux)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
       - name: Install Meson
