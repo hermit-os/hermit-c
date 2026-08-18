@@ -11,28 +11,32 @@ env:
 jobs:
   format:
     name: Format
-    runs-on: ubuntu-latest
-    container: alpine:edge
+    runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@v4
-      - run: apk add meson clang-extra-tools
+      - uses: actions/checkout@v7
+      - name: Install packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends meson clang-format
       - run: meson format --check-only
       - run: meson setup builddir
       - run: ninja -C builddir clang-format-check
   
   clang-tidy:
     name: Lint
-    runs-on: ubuntu-latest
-    container: alpine:edge
+    runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@v4
-      - run: apk add meson clang-extra-tools
+      - uses: actions/checkout@v7
+      - name: Install packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends meson clang-tidy
       - run: meson setup builddir
       - run: ninja -C builddir clang-tidy
 
   test:
     name: Test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     container: 
       image: ghcr.io/hermit-os/hermit-gcc:${{ matrix.arch }}
       options: --privileged
@@ -63,7 +67,7 @@ jobs:
             packages: qemu-system-misc
             netdev: virtio-net-mmio
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           submodules: true
       - name: Install packages
@@ -103,9 +107,9 @@ jobs:
 
   test-linux:
     name: Test (Linux)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install Meson
         run: |
           sudo apt-get update
