@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     container: alpine:3.21
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: apk add meson clang-extra-tools
       - run: meson format --check-only
       - run: meson setup builddir
@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     container: alpine:3.21
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: apk add meson clang-extra-tools
       - run: meson setup builddir
       - run: ninja -C builddir clang-tidy
@@ -63,7 +63,7 @@ jobs:
             packages: qemu-system-misc
             netdev: virtio-net-mmio
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           submodules: true
       - name: Install packages
@@ -105,7 +105,7 @@ jobs:
     name: Test (Linux)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install Meson
         run: |
           sudo apt-get update
