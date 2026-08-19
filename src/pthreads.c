@@ -5,7 +5,10 @@
 #include <stddef.h>
 #include <stdlib.h>
 
-enum { ITERATIONS = 10000000 };
+// Increase the number of iterations again once this issue is solved:
+// https://github.com/hermit-os/kernel/issues/2665
+// enum { ITERATIONS = 10000000 };
+enum { ITERATIONS = 1000000 };
 
 struct thread_info {
     pthread_t thread_id;
