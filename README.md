@@ -54,7 +54,7 @@ qemu-system-x86_64 \
     -m 1024M \
     -device isa-debug-exit,iobase=0xf4,iosize=0x04 \
     -display none -serial stdio \
-    -kernel hermit-loader-x86_64 \
+    -kernel hermit-loader-x86_64-multiboot \
     -initrd build-x86_64-hermit-debug/hello_world
 ```
 
