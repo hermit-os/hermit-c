@@ -61,10 +61,10 @@ jobs:
             flags: --accel
             netdev: virtio-net-pci
           - arch: aarch64
-            packages: qemu-system-arm ipxe-qemu
+            packages: qemu-system-arm
             netdev: virtio-net-pci
           - arch: riscv64
-            packages: qemu-system-misc
+            packages: qemu-system-riscv
             netdev: virtio-net-mmio
     steps:
       - uses: actions/checkout@v7
@@ -73,7 +73,7 @@ jobs:
       - name: Install packages
         run: |
           apt-get update
-          apt-get install -y --no-install-recommends gh meson ${{ matrix.packages }}
+          apt-get install -y --no-install-recommends gh meson ipxe-qemu ${{ matrix.packages }}
       - uses: dtolnay/rust-toolchain@stable
       - uses: mkroening/rust-toolchain-toml@main
         with:
@@ -82,11 +82,6 @@ jobs:
         if: matrix.hermit-careful
       - name: Download loader
         run: gh release download --repo hermit-os/loader --pattern hermit-loader-${{ matrix.arch }}
-      - name: Dowload OpenSBI
-        if: matrix.arch == 'riscv64'
-        run: |
-          gh release download v1.7 --repo riscv-software-src/opensbi --pattern 'opensbi-*-rv-bin.tar.xz'
-          tar -xvf opensbi-*-rv-bin.tar.xz opensbi-1.7-rv-bin/share/opensbi/lp64/generic/firmware/fw_jump.bin
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target hello_world qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target fs qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target fstat qemu ${{ matrix.flags }}
