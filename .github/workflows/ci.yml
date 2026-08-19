@@ -61,7 +61,7 @@ jobs:
             flags: --accel
             netdev: virtio-net-pci
           - arch: aarch64
-            packages: qemu-system-arm ipxe-qemu
+            packages: qemu-system-arm
             netdev: virtio-net-pci
           - arch: riscv64
             packages: qemu-system-misc
@@ -73,7 +73,7 @@ jobs:
       - name: Install packages
         run: |
           apt-get update
-          apt-get install -y --no-install-recommends gh meson ${{ matrix.packages }}
+          apt-get install -y --no-install-recommends gh meson ipxe-qemu ${{ matrix.packages }}
       - uses: dtolnay/rust-toolchain@stable
       - uses: mkroening/rust-toolchain-toml@main
         with:
