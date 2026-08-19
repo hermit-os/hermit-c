@@ -81,7 +81,7 @@ jobs:
       - run: cargo +stable install cargo-careful
         if: matrix.hermit-careful
       - name: Download loader
-        run: gh release download --repo hermit-os/loader --pattern hermit-loader-${{ matrix.arch }}
+        run: gh release download --repo hermit-os/loader --pattern 'hermit-loader-${{ matrix.arch }}*'
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target hello_world qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target fs qemu ${{ matrix.flags }}
       - run: cargo xtask ci c --arch ${{ matrix.arch }} --buildtype ${{ matrix.buildtype }} --target fstat qemu ${{ matrix.flags }}
