@@ -64,7 +64,7 @@ jobs:
             packages: qemu-system-arm
             netdev: virtio-net-pci
           - arch: riscv64
-            packages: qemu-system-misc
+            packages: qemu-system-riscv
             netdev: virtio-net-mmio
     steps:
       - uses: actions/checkout@v7
